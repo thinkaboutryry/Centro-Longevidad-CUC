@@ -696,13 +696,15 @@ function initAboutSlider() {
     const nextBtn = document.getElementById('about-next');
     let currentSlide = 0;
     
-    if (prevBtn && nextBtn && slides.length > 0) {
-        const showSlide = (index) => {
-            slides.forEach((slide, i) => {
-                slide.classList.toggle('active', i === index);
-            });
-        };
-        
+    if (slides.length === 0) return;
+
+    const showSlide = (index) => {
+        slides.forEach((slide, i) => {
+            slide.classList.toggle('active', i === index);
+        });
+    };
+    
+    if (prevBtn && nextBtn) {
         prevBtn.addEventListener('click', (e) => {
             e.preventDefault();
             currentSlide = (currentSlide - 1 + slides.length) % slides.length;
@@ -714,6 +716,35 @@ function initAboutSlider() {
             currentSlide = (currentSlide + 1) % slides.length;
             showSlide(currentSlide);
         });
+    }
+
+    // Soporte para gestos táctiles (Swipe) en dispositivos móviles
+    const sliderContainer = document.querySelector('.about-slider-container');
+    if (sliderContainer) {
+        let touchStartX = 0;
+        let touchEndX = 0;
+        
+        sliderContainer.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, { passive: true });
+        
+        sliderContainer.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        }, { passive: true });
+        
+        const handleSwipe = () => {
+            const swipeThreshold = 50; // Umbral de píxeles para reconocer el gesto
+            if (touchStartX - touchEndX > swipeThreshold) {
+                // Deslizar a la izquierda -> Siguiente tarjeta
+                currentSlide = (currentSlide + 1) % slides.length;
+                showSlide(currentSlide);
+            } else if (touchEndX - touchStartX > swipeThreshold) {
+                // Deslizar a la derecha -> Tarjeta anterior
+                currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+                showSlide(currentSlide);
+            }
+        };
     }
 }
 
