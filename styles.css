@@ -610,6 +610,10 @@ nav a.active::after {
     border-radius: var(--border-radius-sm);
     border-left: 4px solid var(--color-teal-blue);
     background-color: var(--color-white);
+    height: 300px; /* Estandarizar altura de los bloques en desktop */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
 }
 
 .about-slide-card h4 {
@@ -1098,6 +1102,7 @@ nav a.active::after {
     padding: 2rem;
     border-radius: var(--border-radius-sm);
     border: 1px solid var(--color-border);
+    min-height: 360px; /* Estandarizar altura de bloques para evitar brincos */
 }
 
 .chart-box h4 {
@@ -1363,7 +1368,7 @@ footer {
 
 .footer-grid {
     display: grid;
-    grid-template-columns: 1.5fr 1fr 1fr 1.2fr;
+    grid-template-columns: 1.5fr 1fr 1fr;
     gap: 2.5rem;
     margin-bottom: 3rem;
 }
@@ -1407,11 +1412,12 @@ footer {
     border-top: 1px solid rgba(255, 255, 255, 0.08);
     padding-top: 1.5rem;
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
     align-items: center;
+    justify-content: center;
     font-size: 0.75rem;
-    flex-wrap: wrap;
-    gap: 1rem;
+    gap: 0.5rem;
+    text-align: center;
 }
 
 /* Accessibility Control Panel */
@@ -1744,27 +1750,31 @@ body.reduce-motion * {
     }
     
     /* Sliding navigation from the left */
+    /* Sliding navigation from the right */
     nav {
         position: fixed;
         top: 0; 
-        left: -320px; /* Start hidden on the left */
+        right: -280px; /* Empezar oculto a la derecha */
+        left: auto;
         bottom: 0;
         width: 280px;
-        background-color: var(--color-white);
+        background-color: #ffffff !important; /* Blanco 100% sólido y opaco */
+        opacity: 1 !important;
         flex-direction: column;
         padding: 6rem 1.5rem 2rem 1.5rem;
-        border-right: 3px solid var(--color-teal-blue);
-        box-shadow: 4px 0 24px rgba(47, 58, 66, 0.15);
+        border-left: 3px solid var(--color-teal-blue); /* Borde decorativo a la izquierda del menú */
+        border-right: none;
+        box-shadow: -4px 0 24px rgba(47, 58, 66, 0.15); /* Sombra hacia la izquierda */
         transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         z-index: 1050;
-        display: flex; /* Always flex but hidden outside the viewport */
+        display: flex; /* Siempre en flex pero oculto fuera de pantalla */
         gap: 0.85rem;
         align-items: flex-start;
         justify-content: flex-start;
     }
     
     nav.open {
-        transform: translateX(320px); /* Slide in to reveal */
+        transform: translateX(-280px); /* Desplazarse hacia la izquierda para mostrarse */
     }
     
     nav a {
@@ -1812,7 +1822,7 @@ footer, .footer-bottom, .footer-col, .footer-links {
 
 .footer-grid {
     display: grid;
-    grid-template-columns: 1.5fr 1fr 1fr 1.2fr;
+    grid-template-columns: 1.5fr 1fr 1fr;
     gap: 2.5rem;
     margin-bottom: 3rem;
 }
@@ -1875,6 +1885,10 @@ footer, .footer-bottom, .footer-col, .footer-links {
         text-align: center;
         border-left: none;
         border-top: 4px solid var(--color-teal-blue);
+        height: 340px; /* Estandarizar altura de los bloques en mobile */
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
     }
     .about-slide-card h4 {
         justify-content: center;
@@ -1933,6 +1947,17 @@ footer, .footer-bottom, .footer-col, .footer-links {
     }
     
     /* Observatorio mobile layout */
+    .dashboard-header {
+        justify-content: center !important;
+        text-align: center !important;
+    }
+    .dashboard-header h3 {
+        flex-direction: column !important;
+        align-items: center !important;
+        text-align: center !important;
+        width: 100% !important;
+        gap: 0.5rem !important;
+    }
     .dashboard-controls {
         flex-direction: column;
         width: 100%;
