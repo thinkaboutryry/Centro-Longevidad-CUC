@@ -539,7 +539,20 @@ nav a.active::after {
     display: grid;
     grid-template-columns: 0.9fr 1.1fr;
     gap: 4.5rem;
-    align-items: start;
+    align-items: center;
+}
+
+/* Tarjeta contenedora de la ilustracion izquierda */
+.about-image-card {
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-md);
+    background-color: var(--color-white);
+    height: 300px; /* Igual que la tarjeta del carrusel */
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 20px rgba(47, 58, 66, 0.02);
 }
 
 /* Slider de Misión, Visión, Objetivos */
@@ -578,6 +591,7 @@ nav a.active::after {
     display: flex;
     gap: 0.75rem;
     margin-top: 1.5rem;
+    justify-content: center; /* Centrar flechas horizontalmente con la carta */
 }
 
 .btn-arrow {
@@ -613,7 +627,7 @@ nav a.active::after {
     height: 300px; /* Estandarizar altura de los bloques en desktop */
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
+    justify-content: center; /* Centrar contenido verticalmente para simetría visual */
 }
 
 .about-slide-card h4 {
@@ -882,6 +896,7 @@ nav a.active::after {
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    width: 100%;
 }
 
 .bar-row {
@@ -943,16 +958,14 @@ nav a.active::after {
     stroke: rgba(47, 58, 70, 0.08);
 }
 
+.pie-segment-1 { stroke: var(--color-slate-dark); }
+.pie-segment-2 { stroke: var(--color-teal-blue); }
+.pie-segment-3 { stroke: var(--color-sky-blue); }
+.pie-segment-4 { stroke: #e2b83b; }
+.pie-segment-5 { stroke: #10b981; }
+
 .pie-segment {
     stroke-dasharray: 0 100;
-}
-
-.pie-segment-red {
-    stroke: var(--color-slate-dark);     
-}
-
-.pie-segment-gold {
-    stroke: var(--color-teal-blue);      
 }
 
 .pie-legend {
@@ -975,8 +988,11 @@ nav a.active::after {
     border-radius: 2px;
 }
 
-.legend-color.red { background-color: var(--color-slate-dark); }
-.legend-color.gold { background-color: var(--color-teal-blue); }
+.legend-color-1 { background-color: var(--color-slate-dark); }
+.legend-color-2 { background-color: var(--color-teal-blue); }
+.legend-color-3 { background-color: var(--color-sky-blue); }
+.legend-color-4 { background-color: #e2b83b; }
+.legend-color-5 { background-color: #10b981; }
 
 /* Datos de impacto / Estadísticas */
 .impact-section {
@@ -1102,7 +1118,19 @@ nav a.active::after {
     padding: 2rem;
     border-radius: var(--border-radius-sm);
     border: 1px solid var(--color-border);
-    min-height: 360px; /* Estandarizar altura de bloques para evitar brincos */
+    min-height: 385px; /* Estandarizar altura de bloques para simetría */
+    display: flex;
+    flex-direction: column;
+}
+
+/* Area de contenido interno del grafico para centrado vertical */
+.chart-content-area {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
 }
 
 .chart-box h4 {
@@ -1212,12 +1240,18 @@ nav a.active::after {
     line-height: 1.5;
 }
 
-/* CTA Final */
+/* CTA Final Parallax de Microscopio */
 .cta-final {
-    background-color: var(--color-slate-dark);
+    position: relative;
+    background-image: linear-gradient(rgba(47, 58, 66, 0.92), rgba(18, 109, 138, 0.92)), url('./assets/research.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed; /* Parallax en computadores */
     color: var(--color-white);
     text-align: center;
-    padding: 5.5rem 0;
+    padding: 6.5rem 0;
+    overflow: hidden;
 }
 
 .cta-final-container {
@@ -1751,7 +1785,7 @@ body.reduce-motion * {
     
     /* Sliding navigation from the left */
     /* Sliding navigation from the right */
-    nav {
+    #main-navigation {
         position: fixed;
         top: 0; 
         right: -280px; /* Empezar oculto a la derecha */
@@ -1773,11 +1807,11 @@ body.reduce-motion * {
         justify-content: flex-start;
     }
     
-    nav.open {
+    #main-navigation.open {
         transform: translateX(-280px); /* Desplazarse hacia la izquierda para mostrarse */
     }
     
-    nav a {
+    #main-navigation a {
         width: 100%;
         text-align: left;
         padding: 0.75rem 1rem;
@@ -1787,16 +1821,16 @@ body.reduce-motion * {
         transition: var(--transition-fast);
     }
     
-    nav a:hover {
+    #main-navigation a:hover {
         background-color: var(--color-bg-light);
         padding-left: 1.25rem;
     }
     
-    nav a::after {
+    #main-navigation a::after {
         display: none;
     }
     
-    nav a.active {
+    #main-navigation a.active {
         color: var(--color-teal-blue);
         background-color: rgba(18, 109, 138, 0.06);
         font-weight: 700;
@@ -1806,7 +1840,7 @@ body.reduce-motion * {
         display: none;
     }
     
-    nav .btn-vinculacion-mobile {
+    #main-navigation .btn-vinculacion-mobile {
         display: block !important;
         margin: 2rem 0 0 0;
         width: 100%;
@@ -1888,7 +1922,7 @@ footer, .footer-bottom, .footer-col, .footer-links {
         height: 340px; /* Estandarizar altura de los bloques en mobile */
         display: flex;
         flex-direction: column;
-        justify-content: flex-start;
+        justify-content: center; /* Centrado vertical en móviles */
     }
     .about-slide-card h4 {
         justify-content: center;
@@ -2011,5 +2045,13 @@ footer, .footer-bottom, .footer-col, .footer-links {
     .accessibility-panel {
         bottom: 1rem;
         right: 1rem;
+    }
+}
+
+/* Regla especial para alianzas desktop */
+@media (min-width: 1025px) {
+    .alianzas-slider {
+        flex-wrap: nowrap !important;
+        gap: 2rem;
     }
 }

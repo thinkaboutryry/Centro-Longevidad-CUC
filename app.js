@@ -185,25 +185,49 @@ function initMobileMenu() {
 */
 function initStatsCounter() {
     const counters = document.querySelectorAll('.counter-number');
-    if (counters.length === 0) return;
+    const section = document.querySelector('.impact-section');
+    if (counters.length === 0 || !section) return;
     
-    counters.forEach(counter => {
-        const target = parseInt(counter.getAttribute('data-target'));
-        let current = 0;
-        const duration = 1200;
-        const increment = target / (duration / 16);
-        
-        const updateCount = () => {
-            current += increment;
-            if (current < target) {
-                counter.innerText = '+' + Math.floor(current);
-                requestAnimationFrame(updateCount);
-            } else {
-                counter.innerText = '+' + target;
+    let animated = false;
+    
+    const startCounting = () => {
+        counters.forEach(counter => {
+            const target = parseInt(counter.getAttribute('data-target'));
+            let current = 0;
+            const duration = 1500; // 1.5s de animación suave y fluida
+            const startTime = performance.now();
+            
+            const updateCount = (now) => {
+                const elapsed = now - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                
+                // Easing cúbico-out para desacelerar premium al final
+                const easeProgress = 1 - Math.pow(1 - progress, 3);
+                const val = Math.floor(easeProgress * target);
+                
+                counter.innerText = '+' + val;
+                
+                if (progress < 1) {
+                    requestAnimationFrame(updateCount);
+                } else {
+                    counter.innerText = '+' + target;
+                }
+            };
+            requestAnimationFrame(updateCount);
+        });
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting && !animated) {
+                animated = true;
+                startCounting();
+                observer.unobserve(entry.target);
             }
-        };
-        updateCount();
-    });
+        });
+    }, { threshold: 0.15 });
+    
+    observer.observe(section);
 }
 
 /*
@@ -359,7 +383,7 @@ const mockDataObservatorio = {
     envejecimiento: {
         labels: ["Año 2000", "Año 2010", "Año 2020", "Año 2026 (Proy)"],
         values: [48, 62, 89, 105],
-        percentages: [15, 25, 45, 65]
+        percentages: [12, 18, 30, 40]
     },
     factores: {
         labels: ["Estilo de vida activo", "Genómica y epigenética", "Entorno social/familiar", "Nutrición balanceada"],
@@ -417,7 +441,7 @@ function initObservatorioDashboard() {
             pieSvg.appendChild(bgCircle);
             
             let accumulatedPercentage = 0;
-            const segmentColors = ['pie-segment-red', 'pie-segment-gold', 'pie-segment-red', 'pie-segment-gold', 'pie-segment-red'];
+            const segmentColors = ['pie-segment-1', 'pie-segment-2', 'pie-segment-3', 'pie-segment-4', 'pie-segment-5'];
             
             data.labels.forEach((label, index) => {
                 const pct = data.percentages[index];
@@ -446,11 +470,11 @@ function initObservatorioDashboard() {
                 
                 accumulatedPercentage += pct;
                 
-                const isRed = colorClass.includes('red');
+                const colorIndex = (index % segmentColors.length) + 1;
                 const legendItem = document.createElement('div');
                 legendItem.className = 'legend-item';
                 legendItem.innerHTML = `
-                    <div class="legend-color ${isRed ? 'red' : 'gold'}"></div>
+                    <div class="legend-color legend-color-${colorIndex}"></div>
                     <div>${label}: <strong>${pct}%</strong></div>
                 `;
                 pieLegend.appendChild(legendItem);
